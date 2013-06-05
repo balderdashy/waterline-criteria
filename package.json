@@ -1,0 +1,22 @@
+{
+  "name": "waterline-criteria",
+  "version": "0.0.0",
+  "description": "Utility library for use in Sails adapters  where you need to filter a list of output using a criteria object",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/runner.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:balderdashy/waterline-criteria.git"
+  },
+  "keywords": [
+    "waterline",
+    "utility"
+  ],
+  "author": "Mike McNeil",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "~1.2.1"
+  }
+}
