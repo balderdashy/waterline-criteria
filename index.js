@@ -233,6 +233,11 @@ function normalizeComparison(a,b) {
     a = a.toLowerCase();
     b = b.toLowerCase();
   }
+
+  // Stringify for comparisons
+  a = JSON.stringify(a);
+  b = JSON.stringify(b);
+
   return [a,b];
 }
 
