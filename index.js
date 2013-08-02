@@ -52,6 +52,18 @@ function sortData(data, sortCriteria) {
     var sortIndex = 0;
 
     function comp(key, val) {
+
+      // Check if one record has the value and the other doesn't
+      if(a[key] && !b[key]) {
+        if(val === 1) return 1;
+        return -1;
+      }
+
+      if(!a[key] && b[key]) {
+        if(val === 1) return -1;
+        return 1;
+      }
+
       if(a[key] < b[key]){
         if(val === 1) return -1;
         return 1;
