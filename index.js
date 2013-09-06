@@ -247,8 +247,8 @@ function normalizeComparison(a,b) {
   }
 
   // Stringify for comparisons
-  a = JSON.stringify(a);
-  b = JSON.stringify(b);
+  a = a.toString();
+  b = b.toString();
 
   return [a,b];
 }
