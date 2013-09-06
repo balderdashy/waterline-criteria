@@ -20,7 +20,6 @@
     "lodash": "1.2.1"
   },
   "devDependencies": {
-    "coffee-script": "~1.6.3",
     "mocha": "~1.12.0"
   }
 }

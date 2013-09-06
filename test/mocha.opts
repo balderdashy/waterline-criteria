@@ -1,5 +1,4 @@
 --timeout 60000
 --reporter dot
 --ui bdd
---compilers coffee:coffee-script
-test/**/*.coffee
+test/**/*.js
