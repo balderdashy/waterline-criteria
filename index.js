@@ -73,7 +73,10 @@ function sortData(data, sortCriteria) {
         if(val === 1) return 1;
         return -1;
       }
-
+      
+      if(!sortCriteria.length){
+        return 0;
+      }
       if (++sortIndex >= sortCriteria.length) return 0;
 
       keyPair = getKeyPair(sortCriteria, sortIndex);
