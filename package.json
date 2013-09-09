@@ -1,6 +1,6 @@
 {
   "name": "waterline-criteria",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "description": "Utility library for use in Sails adapters where you need to filter a list of output using a criteria object",
   "main": "index.js",
   "scripts": {
