@@ -88,7 +88,7 @@ function sortData(data, sortCriteria) {
 
 // Grab a key/pair from an object based on array index
 function getKeyPair(obj, i) {
-  var key = Object.keys(obj)[i];
+  var key = _.keys(obj)[i];
   return { key: key, val: obj[key] };
 }
 
