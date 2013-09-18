@@ -240,14 +240,18 @@ var compare = {
 
 // Prepare two values for comparison
 function normalizeComparison(a,b) {
+
+  if(_.isUndefined(a) || a === null) a = '';
+  if(_.isUndefined(b) || b === null) b = '';
+
   if (_.isString(a) && _.isString(b)) {
     a = a.toLowerCase();
     b = b.toLowerCase();
   }
 
   // Stringify for comparisons
-  a = a.toString();
-  b = b.toString();
+  a = typeof a.toString !== 'undefined' ? a.toString() : '' + a;
+  b = typeof b.toString !== 'undefined' ? b.toString() : '' + b;
 
   return [a,b];
 }
