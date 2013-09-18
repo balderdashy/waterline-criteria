@@ -18,6 +18,7 @@ module.exports = function getMatchIndices(data, options) {
   matches = applySort(matches, options.sort);
   matches = applySkip(matches, options.skip);
   matches = applyLimit(matches, options.limit);
+
   var matchIndices = _.pluck(matches, origIndexKey);
 
   // Remove original index key which is keeping track of the index in the unsorted data
@@ -45,48 +46,43 @@ function applySort(data, sort) {
 }
 
 // Sort Function
+// Taken From: http://stackoverflow.com/a/4760279/909625
 function sortData(data, sortCriteria) {
-  var keyPair;
 
-  data.sort(function (a, b) {
-    var sortIndex = 0;
-
-    function comp(key, val) {
-
-      // Check if one record has the value and the other doesn't
-      if(a[key] && !b[key]) {
-        if(val === 1) return 1;
-        return -1;
-      }
-
-      if(!a[key] && b[key]) {
-        if(val === 1) return -1;
-        return 1;
-      }
-
-      if(a[key] < b[key]){
-        if(val === 1) return -1;
-        return 1;
-      }
-
-      if (a[key] > b[key]) {
-        if(val === 1) return 1;
-        return -1;
-      }
-      
-      if(!sortCriteria.length){
-        return 0;
-      }
-      if (++sortIndex >= sortCriteria.length) return 0;
-
-      keyPair = getKeyPair(sortCriteria, sortIndex);
-      return comp(keyPair.key, keyPair.val);
+  function dynamicSort(property) {
+    var sortOrder = 1;
+    if(property[0] === '-') {
+      sortOrder = -1;
+      property = property.substr(1);
     }
 
-    keyPair = getKeyPair(sortCriteria, sortIndex);
-    return comp(keyPair.key, keyPair.val);
+    return function (a,b) {
+      var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+      return result * sortOrder;
+    };
+  }
+
+  function dynamicSortMultiple() {
+    var props = arguments;
+    return function (obj1, obj2) {
+      var i = 0, result = 0, numberOfProperties = props.length;
+
+      while(result === 0 && i < numberOfProperties) {
+        result = dynamicSort(props[i])(obj1, obj2);
+        i++;
+      }
+      return result;
+    };
+  }
+
+  // build sort criteria in the format ['firstName', '-lastName']
+  var sortArray = [];
+  _.each(_.keys(sortCriteria), function(key) {
+    if(sortCriteria[key] === -1) sortArray.push('-' + key.toLowerCase());
+    else sortArray.push(key.toLowerCase());
   });
 
+  data.sort(dynamicSortMultiple.apply(null, sortArray));
   return data;
 }
 
@@ -273,6 +269,7 @@ function isNumbery (value) {
 
 // matchFn => the function that will be run to check for a match between the two literals
 function matchLiteral(model, key, criterion, matchFn) {
+
   // If the criterion are both parsable finite numbers, cast them
   if(isNumbery(criterion) && isNumbery(model[key])) {
     criterion = +criterion;
@@ -280,12 +277,11 @@ function matchLiteral(model, key, criterion, matchFn) {
   }
 
   // ensure the key attr exists in model
-  if(_.isUndefined(model[key])) {
-    return false;
-  }
+  if(!model.hasOwnProperty(key)) return false;
+  if(_.isUndefined(criterion)) return false;
 
   // ensure the key attr matches model attr in model
-  else if((! matchFn(model[key],criterion))) {
+  if((!matchFn(model[key],criterion))) {
     return false;
   }
 
