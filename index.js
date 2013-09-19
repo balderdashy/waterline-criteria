@@ -20,10 +20,12 @@ module.exports = function filterData(collectionName, data, options) {
   matches = applyLimit(matches, options.limit);
   matches = applyJoins(matches, data, options.joins);
 
+  // Grab the index values of matched results
+  // used to update the original values in the data source (sails-disk, sails-memory)
   var matchIndices = _.pluck(matches, origIndexKey);
 
   // Remove original index key which is keeping track of the index in the unsorted data
-  _.each(data, function(datum) {
+  _.each(matches, function(datum) {
     delete datum[origIndexKey];
   });
 
