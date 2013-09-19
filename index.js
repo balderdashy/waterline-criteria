@@ -29,7 +29,7 @@ module.exports = function filterData(collectionName, data, options) {
     delete datum[origIndexKey];
   });
 
-  return matchIndices;
+  return { results: matches, indicies: matchIndices };
 };
 
 // Run criteria query against data set
