@@ -1,55 +1,59 @@
 var wc = require('../'),
-  assert = require('assert'),
+    assert = require('assert');
 
-  expectMatches = function (operators, values, test, expect) {
-    var transforms = [function (x) { return x; }, function (x) { return x.toString(); }];
-    for (var i = 0; i < operators.length; i++) {
-      var operator = operators[i];
-      for (var j = 0; j < transforms.length; j++) {
-        var transform = transforms[j];
-      };
-      for (var k = 0; k < transforms.length; k++) {
-        var perm = transforms[k],
-          data = [],
+var expectMatches = function (operators, values, test, expect) {
+  var transforms = [function (x) { return x; }, function (x) { return x.toString(); }];
+  var transform;
+
+  for (var i = 0; i < operators.length; i++) {
+    var operator = operators[i];
+
+    for (var j = 0; j < transforms.length; j++) {
+      transform = transforms[j];
+    }
+
+    for (var k = 0; k < transforms.length; k++) {
+      var perm = transforms[k],
+          data = { foo: [] },
           where = {key: {}};
 
-        for (var l = 0; l < values.length; l++) {
-          data.push({key: perm(values[l])});
-        };
+      for (var l = 0; l < values.length; l++) {
+        data.foo.push({key: perm(values[l])});
+      }
 
-        where.key[operator] = transform(test);
-        assert.equal(wc(data, {where: where}).length, expect);
-      };
-    };
-  };
+      where.key[operator] = transform(test);
+      assert.equal(wc('foo', data, { where: where }).results.length, expect);
+    }
+  }
+};
 
 
 describe('filter criteria', function () {
 
   it('always matches empty filter', function () {
     var values = [0, 1, 2],
-      data = [];
+        data = { foo: [] };
 
     for (var i = 0; i < values.length; i++) {
-      data.push({a: values[i]});
-    };
+      data.foo.push({ a: values[i] });
+    }
 
-    assert.equal(wc(data, {}).length, 3);
-    assert.equal(wc(data, {where: null}).length, 3);
-    assert.equal(wc(data, {where: {}}).length, 3);
-    assert.equal(wc(data, {where: ''}).length, 3);
+    assert.equal(wc('foo', data, {}).results.length, 3);
+    assert.equal(wc('foo', data, { where: null }).results.length, 3);
+    assert.equal(wc('foo', data, { where: {} }).results.length, 3);
+    assert.equal(wc('foo', data, { where: '' }).results.length, 3);
   });
 
   it('matches equal', function () {
     var values = [0, 1, 2],
-      data = [];
+        data = { foo: [] };
 
     for (var i = 0; i < values.length; i++) {
-      data.push({a: values[i]});
-    };
+      data.foo.push({ a: values[i] });
+    }
 
-    assert.equal(wc(data, {where: {a: 1}}).length, 1);
-    assert.equal(wc(data, {where: {a: '1'}}).length, 1);
+    assert.equal(wc('foo', data, { where: {a: 1} }).results.length, 1);
+    assert.equal(wc('foo', data, { where: {a: '1'} }).results.length, 1);
   });
 
   it('matches not', function () {
@@ -90,36 +94,36 @@ describe('filter criteria', function () {
 
   it('matches or', function () {
     var values = ['abc', 'bcd', 'cde'],
-      data = [],
-      where = {'or': [{key: {contains: 'a'}}, {key: {startsWith: 'b'}}]};
+        data = { foo: [] },
+        where = {'or': [{ key: {contains: 'a'} }, { key: {startsWith: 'b'} }]};
 
     for (var i = 0; i < values.length; i++) {
-      data.push({key: values[i]});
-    };
+      data.foo.push({ key: values[i] });
+    }
 
-    assert.equal(wc(data, {where: where}).length, 2);
+    assert.equal(wc('foo', data, { where: where }).results.length, 2);
   });
 
   it('matches and', function () {
     var values = ['abc', 'bcd', 'cde'],
-      data = [],
-      where = {'and': [{key: {contains: 'b'}}, {key: {startsWith: 'a'}}]};
+        data = { foo: [] },
+        where = { 'and': [{ key: {contains: 'b'} }, { key: {startsWith: 'a'} }]};
 
     for (var i = 0; i < values.length; i++) {
-      data.push({key: values[i]});
-    };
+      data.foo.push({ key: values[i] });
+    }
 
-    assert.equal(wc(data, {where: where}).length, 1);
+    assert.equal(wc('foo', data, { where: where }).results.length, 1);
   });
 
   it('matches in array', function () {
     var values = [0, 1, 2],
-      data = [];
+        data = { foo: [] };
 
     for (var i = 0; i < values.length; i++) {
-      data.push({key: values[i]});
-    };
+      data.foo.push({ key: values[i] });
+    }
 
-    assert.equal(wc(data, {where: {key: [0, 1]}}).length, 2);
+    assert.equal(wc('foo', data, { where: {key: [0, 1]} }).results.length, 2);
   });
 });
