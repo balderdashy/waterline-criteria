@@ -2,11 +2,11 @@ var _ = require('lodash');
 
 // Find models in data which satisfy the options criteria,
 // then return their indices in order
-module.exports = function getMatchIndices(data, options) {
+module.exports = function filterData(collectionName, data, options) {
 
   // Remember original indices
   var origIndexKey = '__origindex';
-  var matches = _.clone(data);
+  var matches = _.cloneDeep(data[collectionName]);
 
   // Determine origIndex key
   _.each(matches, function(model, index) {
@@ -18,6 +18,7 @@ module.exports = function getMatchIndices(data, options) {
   matches = applySort(matches, options.sort);
   matches = applySkip(matches, options.skip);
   matches = applyLimit(matches, options.limit);
+  matches = applyJoins(matches, data, options.joins);
 
   var matchIndices = _.pluck(matches, origIndexKey);
 
@@ -105,6 +106,77 @@ function applyLimit(data, limit) {
   else {
     return _.first(data, limit);
   }
+}
+
+function applyJoins(data, collections, joins) {
+
+  // Don't process if there are no joins
+  if(_.isUndefined(joins)) return data;
+
+  var results = buildJoins(data, collections, joins);
+  results = cleanseJoins(results, joins);
+
+  return results;
+}
+
+function buildJoins(data, collections, joins) {
+
+  // For Each Join find all matching records
+  _.each(joins, function(join) {
+
+    // For Each Record get values that match the join clause
+    _.each(data, function(record) {
+
+      // Build where clause
+      var where = {};
+
+      // Handle Many-To-Many joins where a join table is involved
+      if(record.hasOwnProperty(join.parent) && _.isArray(record[join.parent])) {
+        where[join.childKey] = _.pluck(record[join.parent], join.parentKey);
+      }
+
+      // Handle normal Belongs To / Has Many joins
+      else {
+        if(!record.hasOwnProperty(join.parentKey)) return;
+        where[join.childKey] = record[join.parentKey];
+      }
+
+      // Find all the children records that match the where criteria
+      var children = _.filter(collections[join.child], function(model) {
+        return matchSet(model, where);
+      });
+
+      // Delete the original key
+      delete record[join.parentKey];
+
+      // Attach children to key
+      record[join.child] = _.cloneDeep(children);
+    });
+  });
+
+  return data;
+}
+
+/**
+ * Cleanse the record of keys from Join Tables
+ */
+
+function cleanseJoins(data, joins) {
+
+  // For Each Join Remove any keys that don't have select set to true
+  _.each(joins, function(join) {
+
+    // If the join has the select flag set to true the data needs to stay
+    if(join.select) return;
+
+    // Cleanse each record
+    _.each(data, function(record) {
+      if(!record.hasOwnProperty(join.child)) return;
+      delete record[join.child];
+    });
+  });
+
+  return data;
 }
 
 
