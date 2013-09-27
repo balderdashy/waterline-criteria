@@ -11,6 +11,14 @@ module.exports = function (grunt) {
     },
 
     replace: {
+      version: {
+        src: ['bower.json'],
+        dest: 'bower.json',
+        replacements: [{
+          from: /"version":\s*"[^"]+"/,
+          to: '"version": "<%= pkg.version %>"'
+        }]
+      },
       bower: {
         src: ['index.js'],
         dest: 'lib/waterline-criteria.js',
@@ -35,5 +43,5 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('default', ['clean', 'replace', 'uglify']);
+  grunt.registerTask('default', ['clean', 'replace:version', 'replace:bower', 'uglify']);
 };

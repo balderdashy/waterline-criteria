@@ -4,7 +4,8 @@
   "description": "Utility library for use in Sails adapters where you need to filter a list of output using a criteria object",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "prepublish": "grunt"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,7 @@
     "grunt": "~0.4.1",
     "grunt-text-replace": "~0.3.6",
     "grunt-contrib-clean": "~0.5.0",
-    "grunt-contrib-uglify": "~0.2.2"
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-cli": "~0.1.9"
   }
 }
