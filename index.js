@@ -35,11 +35,9 @@ module.exports = function filterData(collectionName, data, options) {
 // Run criteria query against data set
 function applyFilter(data, criteria) {
   if(!data) return data;
-  else {
-    return _.filter(data, function(model) {
-      return matchSet(model, criteria);
-    });
-  }
+  return _.filter(data, function(model) {
+    return matchSet(model, criteria);
+  });
 }
 
 function applySort(data, sort) {
