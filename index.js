@@ -147,7 +147,9 @@ function buildJoins(data, collections, joins) {
       });
 
       // Delete the original key
-      delete record[join.parentKey];
+      if(join.hasOwnProperty('removeParentKey') && join.removeParentKey) {
+        delete record[join.parentKey];
+      }
 
       // Attach children to key
       record[join.child] = _.cloneDeep(children);
