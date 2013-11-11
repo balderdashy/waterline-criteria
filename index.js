@@ -131,13 +131,23 @@ function buildJoins(data, collections, joins) {
       var where = {};
 
       // Handle Many-To-Many joins where a join table is involved
-      if(record.hasOwnProperty(join.parent) && _.isArray(record[join.parent])) {
-        where[join.childKey] = _.pluck(record[join.parent], join.parentKey);
+      if(join.junctionTable) {
+        var manyToManyAlias;
+
+        joins.forEach(function(otherJoin) {
+          if(otherJoin.child === join.parent) {
+            manyToManyAlias = otherJoin.alias + '_' + otherJoin.child;
+          }
+        });
+
+        if(record.hasOwnProperty(manyToManyAlias) && _.isArray(record[manyToManyAlias])) {
+          where[join.childKey] = _.pluck(record[manyToManyAlias], join.parentKey);
+        }
       }
 
       // Handle normal Belongs To / Has Many joins
       else {
-        if(!record.hasOwnProperty(join.parentKey)) return;
+        if(!record.hasOwnProperty(join.parentKey) && !join.junctionTable) return;
         where[join.childKey] = record[join.parentKey];
       }
 
@@ -151,8 +161,35 @@ function buildJoins(data, collections, joins) {
         delete record[join.parentKey];
       }
 
+      var alias = join.alias.toLowerCase() + '_' + join.child.toLowerCase(),
+          key;
+
+      // If a junctionTable is used, the child value should be used as the key name
+      if(join.junctionTable) {
+        key = alias;
+
+        // Find the corresponding join in order to figure out which key was used and remove the join
+        // table data from the record.
+        joins.forEach(function(otherJoin) {
+          if(otherJoin.child === join.parent) {
+            var criteriaKey = otherJoin.alias.toLowerCase() + '_' + otherJoin.child.toLowerCase();
+            delete record[criteriaKey];
+          }
+        });
+
+        record[key] = _.cloneDeep(children);
+        return;
+      }
+
+      // If this is a belongs_to relationship, keep the "foreign key" part and let Waterline
+      // handle the transformations
+      if(join.model) key = join.parentKey;
+
+      // If no model is defined and it's not a junctionTable attach values to the alias
+      if(!join.model) key = alias;
+
       // Attach children to key
-      record[join.child] = _.cloneDeep(children);
+      record[key] = _.cloneDeep(children);
     });
   });
 
