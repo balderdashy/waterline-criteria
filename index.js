@@ -234,10 +234,12 @@ function matchSet(model, criteria, parentKey) {
 
 
 function matchOr(model, disjuncts) {
-  var outcome = false;
+  var outcomes = [];
   _.each(disjuncts, function(criteria) {
-    if(matchSet(model, criteria)) outcome = true;
+    if(matchSet(model, criteria)) outcomes.push(true);
   });
+
+  var outcome = outcomes.length > 0 ? true : false;
   return outcome;
 }
 
@@ -369,12 +371,18 @@ function normalizeComparison(a,b) {
 
 // Return whether this criteria is valid as an object inside of an attribute
 function validSubAttrCriteria(c) {
-  return _.isObject(c) && (
-    c.not || c.greaterThan || c.lessThan ||
-    c.greaterThanOrEqual || c.lessThanOrEqual ||
-    c['<'] || c['<='] || c['!'] || c['>'] || c['>='] ||
-    c.startsWith || c.endsWith || c.contains || c.like
-  );
+
+  if(!_.isObject(c)) return false;
+
+  var valid = false;
+  var validAttributes = ['not', 'greaterThan', 'lessThan', 'greaterThanOrEqual', 'lessThanOrEqual',
+    '<', '<=', '!', '>', '>=', 'startsWith', 'endsWith', 'contains', 'like'];
+
+  _.each(validAttributes, function(attr) {
+    if(hasOwnProperty(c, attr)) valid = true;
+  });
+
+  return valid;
 }
 
 // Returns whether this value can be successfully parsed as a finite number
@@ -465,4 +473,18 @@ function sqlLikeMatch (value,matchString) {
 
 function escapeRegExp(str) {
   return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+}
+
+/**
+ * Safer helper for hasOwnProperty checks
+ *
+ * @param {Object} obj
+ * @param {String} prop
+ * @return {Boolean}
+ * @api public
+ */
+
+var hop = Object.prototype.hasOwnProperty;
+function hasOwnProperty(obj, prop) {
+  return hop.call(obj, prop);
 }
