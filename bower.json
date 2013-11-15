@@ -1,6 +1,6 @@
 {
   "name": "waterline-criteria",
-  "version": "0.9.3",
+  "version": "0.9.5",
   "main": "lib/waterline-criteria.js",
   "ignore": [
     "**/.*",
