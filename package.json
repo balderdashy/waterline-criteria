@@ -18,7 +18,7 @@
   "author": "Mike McNeil",
   "license": "MIT",
   "dependencies": {
-    "lodash": "~2.1.0"
+    "lodash": "~2.3.0"
   },
   "devDependencies": {
     "mocha": "~1.12.0",
