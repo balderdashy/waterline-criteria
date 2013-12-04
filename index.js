@@ -245,8 +245,8 @@ function normalizeComparison(a,b) {
   }
 
   // Stringify for comparisons
-  a = a.toString();
-  b = b.toString();
+  a = (a == null || a == undefined) ? null : (a.toString) ? a.toString() : a;
+  b = (b == null || b == undefined) ? null : (b.toString) ? b.toString() : b;
 
   return [a,b];
 }

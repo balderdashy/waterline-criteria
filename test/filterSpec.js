@@ -52,6 +52,20 @@ describe('filter criteria', function () {
     assert.equal(wc(data, {where: {a: '1'}}).length, 1);
   });
 
+  it('matches equal where some values are null', function () {
+    var values = [0, 1, 2],
+      data = [];
+
+    for (var i = 0; i < values.length; i++) {
+      data.push({a: values[i], b:null, c:null});
+    };
+
+    data.push({b:99, c:99});
+
+    assert.equal(wc(data, {where: {b: 99}}).length, 1);
+    assert.equal(wc(data, {where: {b: '99'}}).length, 1);
+  });
+
   it('matches not', function () {
     expectMatches(['not', '!'], [0, 1, 2], 1, 2);
   });
