@@ -244,10 +244,18 @@ function normalizeComparison(a,b) {
     b = b.toLowerCase();
   }
 
-  // Stringify for comparisons
-  // unless tese are numbers because that wouldn't make sense..?
-  if (!_.isNumber(a)) {a = a.toString();}
-  if (!_.isNumber(b)) {b = b.toString();}
+
+  // Stringify for comparisons- except for numbers, null, and undefined
+  if (!_.isNumber(a)) {
+    a = a.toString();
+  }
+  else if (_.isNull(a) || _.isUndefined(a)) {}
+
+  if (!_.isNumber(b)) {
+    b = b.toString();
+  }
+  else if (_.isNull(b) || _.isUndefined(b)) {}
+
 
   return [a,b];
 }
