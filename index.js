@@ -361,10 +361,14 @@ function normalizeComparison(a,b) {
     a = a.toLowerCase();
     b = b.toLowerCase();
   }
-
-  // Stringify for comparisons
-  a = typeof a.toString !== 'undefined' ? a.toString() : '' + a;
-  b = typeof b.toString !== 'undefined' ? b.toString() : '' + b;
+  
+  // Stringify for comparisons- except for numbers, null, and undefined
+  if (!_.isNumber(a)) {
+    a = typeof a.toString !== 'undefined' ? a.toString() : '' + a;
+  }
+  if (!_.isNumber(b)) {
+    b = typeof b.toString !== 'undefined' ? b.toString() : '' + b;
+  }
 
   return [a,b];
 }
