@@ -1,6 +1,14 @@
 var wc = require('../'),
   assert = require('assert'),
 
+  /**
+   * 
+   * @param  {[type]} operators [description]
+   * @param  {[type]} values    stuff to search
+   * @param  {[type]} test      [description]
+   * @param  {[type]} expect    [description]
+   * @return {[type]}           [description]
+   */
   expectMatches = function (operators, values, test, expect) {
     var transforms = [function (x) { return x; }, function (x) { return x.toString(); }];
     for (var i = 0; i < operators.length; i++) {
@@ -56,6 +64,9 @@ describe('filter criteria', function () {
     expectMatches(['not', '!'], [0, 1, 2], 1, 2);
   });
 
+  it('matches greater than with trickier digitzz', function () {
+    expectMatches(['greaterThan', '>'], [0, 10, 5, 50, -5], 5, 2);
+  });
   it('matches greater than', function () {
     expectMatches(['greaterThan', '>'], [0, 1, 2], 1, 1);
   });
