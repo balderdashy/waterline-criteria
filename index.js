@@ -245,8 +245,9 @@ function normalizeComparison(a,b) {
   }
 
   // Stringify for comparisons
-  a = a.toString();
-  b = b.toString();
+  // unless tese are numbers because that wouldn't make sense..?
+  if (!_.isNumber(a)) {a = a.toString();}
+  if (!_.isNumber(b)) {b = b.toString();}
 
   return [a,b];
 }
