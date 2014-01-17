@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "prepublish": "npm prune"
+    "prepublish": "npm prune --production"
   },
   "repository": {
     "type": "git",
