@@ -1,3 +1,6 @@
+/**
+ * Module dependencies
+ */
 var wc = require('../'),
     assert = require('assert');
 
