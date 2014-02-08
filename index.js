@@ -7,23 +7,26 @@ var _ = require('lodash');
 
 
 /**
- * Find items in `data` which satisfy `criteria`,
+ * Find items in `data` which satisfy `options`,
  * then return an object with
  *   1. the matched items themselves, and
  *   2. their indices in `data`, in order
+ *
  * 
  * @param  {String}   collectionName
+ * 
  * @param  [{Object}] data
- * @param  {Object}   criteria
+ * 
+ * @param  {Object}   options
+ *   [the Waterline criteria object- complete w/ `where`, `limit`, `sort, `skip`, and `joins`]
+ *
  * @return {
  *   results: [ {Object} ]
  *   indices: [ {Integer|String} ]
  * }
  */
 
-module.exports = function filterData(collectionName, data, criteria) {
-
-  var options = criteria;
+module.exports = function filterData(collectionName, data, options) {
 
   // Remember original indices
   var origIndexKey = '__origindex';
