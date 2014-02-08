@@ -1,8 +1,29 @@
+/**
+ * Module dependencies
+ */
+
 var _ = require('lodash');
 
-// Find models in data which satisfy the options criteria,
-// then return their indices in order
-module.exports = function filterData(collectionName, data, options) {
+
+
+/**
+ * Find items in `data` which satisfy `criteria`,
+ * then return an object with
+ *   1. the matched items themselves, and
+ *   2. their indices in `data`, in order
+ * 
+ * @param  {String}   collectionName
+ * @param  [{Object}] data
+ * @param  {Object}   criteria
+ * @return {
+ *   results: [ {Object} ]
+ *   indices: [ {Integer|String} ]
+ * }
+ */
+
+module.exports = function filterData(collectionName, data, criteria) {
+
+  var options = criteria;
 
   // Remember original indices
   var origIndexKey = '__origindex';
@@ -181,7 +202,7 @@ function buildJoins(data, collections, joins) {
         return;
       }
 
-      // If this is a belongs_to relationship, keep the "foreign key" part and let Waterline
+      // If this is a belongs_to relationship, keep the 'foreign key' part and let Waterline
       // handle the transformations
       if(join.model) key = join.parentKey;
 
@@ -418,7 +439,7 @@ function matchLiteral(model, key, criterion, matchFn) {
 
 
 function checkStartsWith (value, matchString) {
-  // console.log("CheCKING startsWith ", value, "against matchString:", matchString, "result:",sqlLikeMatch(value, matchString));
+  // console.log('CheCKING startsWith ', value, 'against matchString:', matchString, 'result:',sqlLikeMatch(value, matchString));
   return sqlLikeMatch(value, matchString + '%');
 }
 function checkEndsWith (value, matchString) {
@@ -428,7 +449,7 @@ function checkContains (value, matchString) {
   return sqlLikeMatch(value, '%' + matchString + '%');
 }
 function checkLike (value, matchString) {
-  // console.log("CheCKING  ", value, "against matchString:", matchString, "result:",sqlLikeMatch(value, matchString));
+  // console.log('CheCKING  ', value, 'against matchString:', matchString, 'result:',sqlLikeMatch(value, matchString));
   return sqlLikeMatch(value, matchString);
 }
 
@@ -456,12 +477,12 @@ function sqlLikeMatch (value,matchString) {
   else {
     console.error('matchString:');
     console.error(matchString);
-    throw new Error("Unexpected match string: " + matchString + " Please use a regexp or string.");
+    throw new Error('Unexpected match string: ' + matchString + ' Please use a regexp or string.');
   }
 
   // Deal with non-strings
-  if(_.isNumber(value)) value = "" + value;
-  else if(_.isBoolean(value)) value = value ? "true" : "false";
+  if(_.isNumber(value)) value = '' + value;
+  else if(_.isBoolean(value)) value = value ? 'true' : 'false';
   else if(!_.isString(value)) {
     // Ignore objects, arrays, null, and undefined data for now
     // (and maybe forever)
@@ -476,7 +497,7 @@ function sqlLikeMatch (value,matchString) {
 }
 
 function escapeRegExp(str) {
-  return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+  return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
 }
 
 /**
