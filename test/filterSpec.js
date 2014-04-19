@@ -4,33 +4,6 @@
 var wc = require('../'),
     assert = require('assert');
 
-var expectMatches = function (operators, values, test, expect) {
-  var transforms = [function (x) { return x; }, function (x) { return x.toString(); }];
-  var transform;
-
-  for (var i = 0; i < operators.length; i++) {
-    var operator = operators[i];
-
-    for (var j = 0; j < transforms.length; j++) {
-      transform = transforms[j];
-    }
-
-    for (var k = 0; k < transforms.length; k++) {
-      var perm = transforms[k],
-          data = { foo: [] },
-          where = {key: {}};
-
-      for (var l = 0; l < values.length; l++) {
-        data.foo.push({key: perm(values[l])});
-      }
-
-      where.key[operator] = transform(test);
-      assert.equal(wc('foo', data, { where: where }).results.length, expect);
-    }
-  }
-};
-
-
 describe('filter criteria', function () {
 
   it('always matches empty filter', function () {
@@ -130,3 +103,74 @@ describe('filter criteria', function () {
     assert.equal(wc('foo', data, { where: {key: [0, 1]} }).results.length, 2);
   });
 });
+
+
+describe('projections (select)', function () {
+
+  describe('using object syntax', function () {
+
+    it('should select a single field', function () {
+      expectResults({
+        dataset: [{name: 'foo', id:1}, {name: 'foo', id:2}, {name: 'foo', id:3}],
+        criteria: {
+          select: {
+            id: true
+          }
+        },
+        results: [{id:1}, {id:2}, {id:3}]
+      });
+    });
+  });
+
+});
+
+
+
+
+
+
+
+/**
+ * 
+ * @param  {[type]} operators [description]
+ * @param  {[type]} values    [description]
+ * @param  {???} test
+ * @param  {Number} expect    [num expected results]
+ */
+function expectMatches (operators, values, test, expect) {
+  var transforms = [function (x) { return x; }, function (x) { return x.toString(); }];
+  var transform;
+
+  for (var i = 0; i < operators.length; i++) {
+    var operator = operators[i];
+
+    for (var j = 0; j < transforms.length; j++) {
+      transform = transforms[j];
+    }
+
+    for (var k = 0; k < transforms.length; k++) {
+      var perm = transforms[k],
+          data = { foo: [] },
+          where = {key: {}};
+
+      for (var l = 0; l < values.length; l++) {
+        data.foo.push({key: perm(values[l])});
+      }
+
+      where.key[operator] = transform(test);
+      assert.equal(wc('foo', data, { where: where }).results.length, expect);
+    }
+  }
+}
+
+
+/**
+ * @param  {Object} opts
+ */
+function expectResults(opts) {
+  var dataset = opts.dataset,
+    criteria = opts.criteria,
+    results = opts.results;
+
+  assert.deepEqual(results, wc(dataset, criteria).results);
+}
