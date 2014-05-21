@@ -30,6 +30,6 @@
     "grunt-contrib-uglify": "~0.2.2"
   },
   "devDependencies": {
-    "mocha": "^1.17.1"
+    "mocha": "~1.17.1"
   }
 }
