@@ -54,6 +54,25 @@ describe('filter criteria', function() {
     }).results.length, 1);
   });
 
+  it('matches equal date', function() {
+    var values = [new Date(0), new Date(1), new Date(2)],
+      data = {
+        foo: []
+      };
+
+    for (var i = 0; i < values.length; i++) {
+      data.foo.push({
+        a: values[i]
+      });
+    }
+
+    assert.equal(wc('foo', data, {
+      where: {
+        a: new Date(1)
+      }
+    }).results.length, 1);
+  });
+
   it('matches not', function() {
     expectMatches(['not', '!'], [0, 1, 2], 1, 2);
   });
