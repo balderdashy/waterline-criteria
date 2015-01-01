@@ -19,8 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "include-all": "~0.1.2",
-    "lodash": "~2.4.1",
-    "mocha": "^2.1.0"
+    "lodash": "~2.4.1"
   },
   "testDependencies": {
     "bower": "~0.10.0",
@@ -30,5 +29,6 @@
     "grunt-contrib-uglify": "~0.2.2"
   },
   "devDependencies": {
+    "mocha": "^2.1.0"
   }
 }
