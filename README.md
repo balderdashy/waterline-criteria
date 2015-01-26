@@ -36,7 +36,7 @@ $ bower install waterline-criteria
       name: 'Lyra'
     }, {
       id: 2,
-      name 'larry'
+      name: 'larry'
     }];
     
     var x = wlFilter(someData, {
