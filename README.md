@@ -1,5 +1,8 @@
 Waterline-Criteria
 =======================
+[![npm version](https://badge.fury.io/js/waterline-criteria.svg)](http://badge.fury.io/js/waterline-criteria)
+[![Build Status](https://travis-ci.org/balderdashy/waterline-criteria.svg?branch=master)](https://travis-ci.org/balderdashy/waterline-criteria)
+[![Dependency Status](https://david-dm.org/balderdashy/waterline-criteria.svg)](https://david-dm.org/balderdashy/waterline-criteria)
 
 Helper module designed for adapters which communicate with key/value stores such as [Sails-Disk](https://github.com/balderdashy/sails-disk), [Sails-Memory](https://github.com/balderdashy/sails-memory), and [sails-redis](https://github.com/balderdashy/sails-redis) (i.e. they already implement the `semantic` interface, but need to implement the `queryable` interface)
 
