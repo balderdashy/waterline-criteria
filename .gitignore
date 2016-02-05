@@ -1,2 +1,12 @@
+.\#*
+*#
 node_modules
+ssl
+.DS_STORE
+*~
+.idea
+nbproject
+.waterline
+npm-debug.log
+.tmp
 bower_components
