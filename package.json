@@ -1,7 +1,7 @@
 {
   "name": "waterline-criteria",
   "version": "1.0.1",
-  "description": "Utility library for use in Sails adapters where you need to filter a list of output using a criteria object",
+  "description": "Utility library for working with Waterline criterias.  Especially useful when building Sails adapters for key/value databases.",
   "main": "index.js",
   "scripts": {
     "test": "node ./node_modules/mocha/bin/mocha test --recursive",
@@ -15,6 +15,7 @@
     "waterline",
     "criteria",
     "sails",
+    "orm",
     "utility"
   ],
   "author": "Mike McNeil",
