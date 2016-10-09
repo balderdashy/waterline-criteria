@@ -5,15 +5,13 @@ Utilities for working with Waterline criterias, especially for applying them to 
 > This module was designed for adapters which communicate with key/value stores such as [`sails-disk`](https://github.com/balderdashy/sails-disk), [sails-memory](https://github.com/balderdashy/sails-memory), and [sails-redis](https://github.com/balderdashy/sails-redis) (i.e. they already implement the `semantic` interface, but need to implement the `queryable` interface).
 
 
-## For Node.js
-
-#### Installation
+## Installation
 
 ```sh
 $ npm install waterline-criteria --save
 ```
 
-#### Basic Usage
+## Usage
 
 ```js
 var wlFilter = require('waterline-criteria');
@@ -52,7 +50,7 @@ The master branch of this repository holds `waterline-criteria` used in Sails ve
 
 Please observe the guidelines and conventions laid out in the [Sails project contribution guide](http://sailsjs.com/contribute) when opening issues or submitting pull requests.
 
-[![NPM](https://nodei.co/npm/waterline-criteria.png?downloads=true)](http://npmjs.com/package/waterline-criteria)
+[![NPM package info](https://nodei.co/npm/waterline-criteria.png?downloads=true)](http://npmjs.com/package/waterline-criteria)
 
 ## License
 
