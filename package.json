@@ -1,6 +1,6 @@
 {
   "name": "waterline-criteria",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Utility library for working with Waterline criterias.  Especially useful when building Sails adapters for key/value databases.",
   "main": "index.js",
   "scripts": {
