@@ -11,10 +11,29 @@ Utilities for working with Waterline criterias, especially for applying them to 
 $ npm install waterline-criteria --save
 ```
 
-## Usage
+## Filtering an array
+
+Filter an array of dictionaries.
+
+```javascript
+var WLCriteria = require('waterline-criteria');
+
+var results = WLCriteria(dataset, criteria);
+```
+
+|   |         Argument           | Type                           | Details                                                           |
+|---|:-------------------------- | ------------------------------ |:----------------------------------------------------------------- |
+| 1 | dataset                    | ((array))                      | An array of dictionaries to filter/sort.
+| 2 | criteria                   | ((dictionary))                 | A Waterline criteria dictionary.  See [Concepts > Models & ORM > Query Language](http://sailsjs.com/documentation/concepts/models-and-orm/query-language) for more information.
+
+
+> Returns a filtered result set.
+
+
+#### Example
 
 ```js
-var wlFilter = require('waterline-criteria');
+var WLCriteria = require('waterline-criteria');
 
 var SOME_DATASET = [
   {
@@ -27,7 +46,8 @@ var SOME_DATASET = [
   }
 ];
 
-var results = wlFilter(SOME_DATASET, {
+// Filter dataset.
+var results = WLCriteria(SOME_DATASET, {
   where: {
     name: { contains: 'lyr' }
   }
@@ -35,6 +55,73 @@ var results = wlFilter(SOME_DATASET, {
 
 // x ==> [{name: 'Lyra', id: 1}]
 ```
+
+
+## .validateWhereClause()
+
+Check a `where` clause for obviously unsupported usage.
+
+> This does not do any schema-aware validation-- its job is merely to check for structural issues, and to provide a better experience when integrating from userland code.
+
+```javascript
+var WLCriteria = require('waterline-criteria');
+
+try {
+  WLCriteria.validateWhereClause(where);
+} catch (e) {
+  switch (e.code) {
+    case 'E_WHERE_CLAUSE_UNPARSEABLE':
+      // ...
+      break;
+    default: throw e;
+  }
+}
+
+// ...
+```
+
+
+|   |         Argument           | Type                | Details                                                           |
+|---|:-------------------------- | ------------------- |:----------------------------------------------------------------- |
+| 1 | where                      | ((dictionary))      | A hypothetically well-formed `where` clause from a Waterline criteria.
+
+
+> If `where` clause cannot be parsed, throws an Error with a code property of `'E_WHERE_CLAUSE_UNPARSEABLE'`.
+
+
+## .validateSortClause()
+
+Check a `sort` clause for obviously unsupported usage.
+
+> This does not do any schema-aware validation-- its job is merely to check for structural issues, and to provide a better experience when integrating from userland code.
+
+```javascript
+var WLCriteria = require('waterline-criteria');
+
+try {
+  WLCriteria.validateSortClause(sort);
+} catch (e) {
+  switch (e.code) {
+    case 'E_SORT_CLAUSE_UNPARSEABLE':
+      // ...
+      break;
+    default: throw e;
+  }
+}
+
+// ...
+```
+
+
+|   |         Argument           | Type                           | Details                                                           |
+|---|:-------------------------- | ------------------------------ |:----------------------------------------------------------------- |
+| 1 | sort                       | ((dictionary)) _or_ ((string)) | A hypothetically well-formed `sort` clause from a Waterline criteria.
+
+
+> If `sort` clause cannot be parsed, throws an Error with a code property of `'E_SORT_CLAUSE_UNPARSEABLE'`.
+
+
+
 
 ## Bugs &nbsp; [![NPM version](https://badge.fury.io/js/waterline-criteria.svg)](http://npmjs.com/package/waterline-criteria)
 
