@@ -135,7 +135,7 @@ The master branch of this repository holds `waterline-criteria` used in Sails ve
 
 ## Contributing &nbsp; [![Build Status](https://travis-ci.org/balderdashy/waterline-criteria.svg?branch=master)](https://travis-ci.org/balderdashy/waterline-criteria)
 
-Please observe the guidelines and conventions laid out in the [Sails project contribution guide](http://sailsjs.com/contribute) when opening issues or submitting pull requests.
+Please observe the guidelines and conventions laid out in the [Sails project contribution guide](http://sailsjs.com/documentation/contributing) when opening issues or submitting pull requests.
 
 [![NPM package info](https://nodei.co/npm/waterline-criteria.png?downloads=true)](http://npmjs.com/package/waterline-criteria)
 
